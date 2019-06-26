@@ -59,32 +59,6 @@ const generateQR = function(text, fullPath){
 
   });
 }
-// const genereteQR = async function(text) {
-//   var qr_png = qrcode.toFile('./uploads/qr.png','hola',{type: "png"}, async (err) =>{
-//     let transporter = nodemailer.createTransport({
-//       service:'gmail',
-//       auth: {
-//         user: 'enjoymadridmad@gmail.com',
-//         pass: '@Testing123'
-//       }
-//     });
-  
-//     let info = transporter.sendMail({
-//       from: '"Enjoy Madrid" enjoymadridmad@gmail.com',
-//       to: 'correo1@yopmail.com',
-//       subject: "QR Acceso",
-//       html: 'Embedded image: <img src="cid:unique@kreata.ee"/>',
-//       attachments: [{
-//         filename:'qr.png',
-//         path: './uploads/qr.png',
-//         cid: 'unique@kreata.ee'
-//       }]
-      
-//     }).then().catch(err => {
-//       console.log('Esto es un error', err);
-//     });
-//   });
-// };
 
 const sendEmail =  function(email, fileName, fullPath, nameRRPP){
   return new Promise((resolve, reject) => {
