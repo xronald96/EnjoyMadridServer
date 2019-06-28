@@ -3,6 +3,7 @@ const qrcode = require('qrcode');
 const xlsx = require('xlsx');
 const nodemailer = require("nodemailer");
 const qr = require('qr-image');
+var queriesAltaRRPP = require('../queriesDynamoDB/alta-rrpp-table')
 /*
 DATOS TESTING CORREO GMAIlL
 USER: enjoymadridmad@gmail.com
@@ -11,6 +12,11 @@ PASS:  @Testing123
 
 var path = './uploads/';
 var fs = require('fs');
+
+function newRRPP(){
+  queriesAltaRRPP.getAllRRPPs();
+}
+
 function importRRPPs(){
     new Promise((resolve, reject) => {
       fs.readdir(path, (err, files) =>{ // Primera etapa lectura de 
@@ -56,7 +62,6 @@ const generateQR = function(text, fullPath){
       else 
         resolve(fullPath);
     });
-
   });
 }
 
@@ -71,7 +76,7 @@ const sendEmail =  function(email, fileName, fullPath, nameRRPP){
     });
     transporter.sendMail({
       from: '"Enjoy Madrid" enjoymadridmad@gmail.com',
-      to: email, //correo1@yopmail.com
+      to: email,
       subject: "QR Acceso",
       html: '<!DOCTYPE html><html><head><title></title></head><body>Hola '+ nameRRPP +' con este código tanto udted como su clientes tendran entrada gratutita a la discoteca <br><img src="cid:'+ fileName +'"/></body></html>',
       attachments: [{
@@ -83,3 +88,4 @@ const sendEmail =  function(email, fileName, fullPath, nameRRPP){
   });
 };
 module.exports.importRRPPs = importRRPPs;
+module.exports.newRRPP = newRRPP;

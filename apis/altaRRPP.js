@@ -31,5 +31,9 @@ router.post('/new-rrpp', function(req, res) {
 res.send("");
 });
 
+router.get('/db', (req, res) => {
+    console.log('entro en la llamada');
+    functionAltaRRPP.newRRPP();
+})
 
 module.exports = router;

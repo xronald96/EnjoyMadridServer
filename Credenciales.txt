@@ -1,0 +1,16 @@
+Usuario IAM AWS 
+Administrador 
+PASS
+@EnjoyMadrid123
+
+
+AWS CLI
+
+Acces KEy: EnjoyMadrid
+Secret ACces Key: @EnjoyMadrid
+
+
+
+Access key ID:          AKIA3TCNS7CKI22CSR5I
+Secret access key:      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
+
