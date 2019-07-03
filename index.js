@@ -1,6 +1,15 @@
 var express = require('express');
 var app = express();
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
 var altaRRPP = require('./apis/altaRRPP');
+
+MongoClient.connect(url, { useNewUrlParser: true })
+.then(client => {
+  const db = client.db('EnjoyMadrid');
+  app.locals.db = db;
+}).catch(error => console.error(error));
+
 app.use(express.json());
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

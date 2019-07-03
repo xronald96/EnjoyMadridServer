@@ -14,26 +14,28 @@ router.use(function timeLog(req, res, next) {
  
 // Define the home page route
 router.post('/import-rrpp', multipartMiddleware, function(req, res) {
-    functionAltaRRPP.importRRPPs()
-	req.on('data', chunk => {
-    functionAltaRRPP.importRRPPs();
-    console.log('body', req.body); // convert Buffer to string
-});
-res.send("");
+    functionAltaRRPP.importRRPPs(req.app.locals.db)
+    res.send("");
 });
  
 
 // Define the home page route
-router.post('/new-rrpp', function(req, res) {
-	req.on('data', chunk => {
-    console.log('body', chunk.toString()); // convert Buffer to string
-});
-res.send("");
+router.post('/new-rrpp', function(req, res) { 
+    functionAltaRRPP.newRRPP(req.body, req.app.locals.db).then((resObject) => {
+        res.send(resObject);
+    }).catch((err) =>{
+        res.status(400).send(err);
+    });
 });
 
-router.get('/db', (req, res) => {
-    console.log('entro en la llamada');
-    functionAltaRRPP.newRRPP();
-})
+
+router.get('/select-boss', (req, res)=>{
+    functionAltaRRPP.getBosses(req.app.locals.db).then((resObject) =>{
+        res.status(200).send(resObject);
+    }).catch((err) =>{
+        res.status(400).send(err);
+    });
+});
+
 
 module.exports = router;

@@ -2,8 +2,7 @@ const express = require('express');
 const qrcode = require('qrcode');
 const xlsx = require('xlsx');
 const nodemailer = require("nodemailer");
-const qr = require('qr-image');
-var queriesAltaRRPP = require('../queriesDynamoDB/alta-rrpp-table')
+var fs = require('fs');
 /*
 DATOS TESTING CORREO GMAIlL
 USER: enjoymadridmad@gmail.com
@@ -11,13 +10,35 @@ PASS:  @Testing123
 */
 
 var path = './uploads/';
-var fs = require('fs');
 
-function newRRPP(){
-  queriesAltaRRPP.getAllRRPPs();
+function newRRPP(objectRRPP, dbConexion){
+  return new Promise((resolve, reject) => {
+    dbConexion.collection('RRPPs').find({email: objectRRPP.email}).toArray((err, res) =>{
+      if(err) 
+        reject(err);
+      else if(res.length > 0)
+        reject("Ya exite una rrpp con este dni");
+      else {
+        dbConexion.collection('RRPPs').insertOne(objectRRPP, (err, res) => {
+          if(err)
+            reject(err);
+          else{
+            let data = objectRRPP.name + '^' + objectRRPP.surname + '^' + objectRRPP.dni; 
+            generateQR(data, './uploads/'+data+'.png').then(fullPath => {
+              sendEmail(objectRRPP.email, data+'.png', fullPath, objectRRPP.name + ' ' + objectRRPP.surname)
+              .then(()=>{
+                resolve(res.ops);
+              })
+              .catch(err => reject('ERROR Email', err));
+            }).catch(err => reject("ERROR QR: " ,err));
+          }
+        });
+      }
+    });
+  });
 }
 
-function importRRPPs(){
+function importRRPPs(dbConexion){
     new Promise((resolve, reject) => {
       fs.readdir(path, (err, files) =>{ // Primera etapa lectura de 
         if(err)
@@ -32,17 +53,22 @@ function importRRPPs(){
         const sheet = table.Sheets[table.SheetNames[0]];
         var range = xlsx.utils.decode_range(sheet['!ref']);
         for (let rowNum = range.s.r + 1; rowNum <= range.e.r; rowNum++) { //Segunda fila empezamos
-            const secondCell = sheet[xlsx.utils.encode_cell({r: rowNum, c: 1})];
             if(sheet[xlsx.utils.encode_cell({r: rowNum, c: 0})].v &&
             sheet[xlsx.utils.encode_cell({r: rowNum, c: 1})].v &&
             sheet[xlsx.utils.encode_cell({r: rowNum, c: 2})].v &&
             sheet[xlsx.utils.encode_cell({r: rowNum, c: 4})].v ) {
-                  let data = sheet[xlsx.utils.encode_cell({r: rowNum, c: 0})].v + '^' + sheet[xlsx.utils.encode_cell({r: rowNum, c: 2})].v + '^' 
-                  + sheet[xlsx.utils.encode_cell({r: rowNum, c: 4})].v
-                  let nameRRPP = sheet[xlsx.utils.encode_cell({r: rowNum, c: 0})].v + ' ' + sheet[xlsx.utils.encode_cell({r: rowNum, c: 1})].v;
-                  generateQR(data, './uploads/'+data+'.png').then(fullPath => {
-                    sendEmail(sheet[xlsx.utils.encode_cell({r: rowNum, c: 2})].v, data+'.png', fullPath, nameRRPP).catch(err => console.log('Este error', err));
-                  }).catch(err => console.log("ERROR: " ,err));
+              console.log("Esto es el cumple ", sheet[xlsx.utils.encode_cell({r: rowNum, c: 3})].v)
+              let tmpObject = {
+                name: sheet[xlsx.utils.encode_cell({r: rowNum, c: 0})].v,
+                surname: sheet[xlsx.utils.encode_cell({r: rowNum, c: 1})].v,
+                email: sheet[xlsx.utils.encode_cell({r: rowNum, c: 2})].v,
+                bithday: sheet[xlsx.utils.encode_cell({r: rowNum, c: 3})].v,
+                dni: sheet[xlsx.utils.encode_cell({r: rowNum, c: 4})].v,
+                idBoss: sheet[xlsx.utils.encode_cell({r: rowNum, c: 5})].v, // Este es el cod que identifica a un Jefe de quipo 
+                rrpp: sheet[xlsx.utils.encode_cell({r: rowNum, c: 6})].v, // Hay que buscar a este RRPP
+              }
+              newRRPP(tmpObject, dbConexion).then((res)=>{
+              }).catch((err)=>{ console.log('Error', err)});
             }
             // else {
             //   // preparar rrpps incorrectos
@@ -53,6 +79,17 @@ function importRRPPs(){
     }
     );
 };
+
+function getBosses(dbConexion) {
+  return new Promise((resolve, reject) =>{
+    dbConexion.collection('RRPPs').find({rrpp: 'BOSS'}).toArray((err, res) =>{
+      if(err)
+        reject(err);
+      else
+        resolve(res);
+    });
+  });
+}
 
 const generateQR = function(text, fullPath){
   return new Promise((resolve, reject) => {
@@ -87,5 +124,9 @@ const sendEmail =  function(email, fileName, fullPath, nameRRPP){
     }).then(() => resolve(fs.unlinkSync(fullPath))).catch((err) => reject(err));
   });
 };
-module.exports.importRRPPs = importRRPPs;
-module.exports.newRRPP = newRRPP;
+
+module.exports = {
+  importRRPPs,
+  newRRPP,
+  getBosses,
+}; 
