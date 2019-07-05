@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
-var altaRRPP = require('./apis/altaRRPP');
+var altaRRPP = require('./apis/rrpps');
 
 MongoClient.connect(url, { useNewUrlParser: true })
 .then(client => {
@@ -20,7 +20,8 @@ app.use(express.static('public'));
  
 //Routes
 app.use(require('./apis/login'));  //http://127.0.0.1:8000/    http://127.0.0.1:8000/about
-app.use('/altaRRPP', altaRRPP); 
+app.use('/rrpps', altaRRPP); 
+app.use('/usuarios', require('./apis/usuarios'));
 //app.use("/user",require('./routes'));  //http://127.0.0.1:8000/user  http://127.0.0.1:8000/user/about
  
 //you can create more routs

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var functionAltaRRPP = require('../functions/altaRRPP')
+var rrpps = require('../actions/rrpps')
  
 const multipart = require('connect-multiparty'); // para la tranferencia de los datos
 const multipartMiddleware = multipart({
@@ -14,14 +14,14 @@ router.use(function timeLog(req, res, next) {
  
 // Define the home page route
 router.post('/import-rrpp', multipartMiddleware, function(req, res) {
-    functionAltaRRPP.importRRPPs(req.app.locals.db)
+    rrpps.importRRPPs(req.app.locals.db)
     res.send("");
 });
  
 
 // Define the home page route
 router.post('/new-rrpp', function(req, res) { 
-    functionAltaRRPP.newRRPP(req.body, req.app.locals.db).then((resObject) => {
+    rrpps.newRRPP(req.body, req.app.locals.db).then((resObject) => {
         res.send(resObject);
     }).catch((err) =>{
         res.status(400).send(err);
@@ -30,7 +30,7 @@ router.post('/new-rrpp', function(req, res) {
 
 
 router.get('/select-boss', (req, res)=>{
-    functionAltaRRPP.getBosses(req.app.locals.db).then((resObject) =>{
+    rrpps.getBosses(req.app.locals.db).then((resObject) =>{
         res.status(200).send(resObject);
     }).catch((err) =>{
         res.status(400).send(err);
