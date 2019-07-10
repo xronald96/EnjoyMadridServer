@@ -9,7 +9,7 @@ router.use(function timeLog(req, res, next) {
  
  
 // Define the home page route
-router.post('/create', function(req, res) {
+router.post('', function(req, res) {
     console.log('Entro al servidor')
     actionUser.createUser(req.body, req.app.locals.db).then((res) =>{
         res.status(200).send(res);
