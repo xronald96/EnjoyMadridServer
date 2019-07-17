@@ -3,7 +3,7 @@ var router = express.Router();
 var actionUser = require('../actions/usuarios')
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
+  console.log('Usuarios Time: ', Date.now());
   next();
 });
  

@@ -22,6 +22,7 @@ app.use(express.static('public'));
 app.use(require('./apis/login'));  //http://127.0.0.1:8000/    http://127.0.0.1:8000/about
 app.use('/rrpps', altaRRPP); 
 app.use('/usuarios', require('./apis/usuarios'));
+app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
 //app.use("/user",require('./routes'));  //http://127.0.0.1:8000/user  http://127.0.0.1:8000/user/about
  
 //you can create more routs

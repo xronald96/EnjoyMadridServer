@@ -8,6 +8,7 @@ const multipartMiddleware = multipart({
 });
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
+    console.log('RRPPs Time: ', Date.now());
   next();
 });
  
