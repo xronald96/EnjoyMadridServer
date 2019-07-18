@@ -1,0 +1,7 @@
+Mongo atlas user
+user: ronald...@gmail..
+pass: l...88
+
+AcessoDB
+Usuario: DevRonald 
+Pass: EnjoyMadridDev
