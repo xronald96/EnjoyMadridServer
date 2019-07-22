@@ -1,13 +1,13 @@
 var express = require('express');
 var app = express();
-var MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://DevRonald:EnjoyMadridDev@enjoymadrid-rlmhn.mongodb.net/test?retryWrites=true&w=majority";
+// var MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://DevRonald:EnjoyMadridDev@enjoymadrid-rlmhn.mongodb.net/test?retryWrites=true&w=majority"; 
 
-MongoClient.connect(uri, { useNewUrlParser: true })
-.then(client => {
-  const db = client.db('EnjoyMadrid');
-  app.locals.db = db;
-}).catch(error => console.error(error));
+// MongoClient.connect(uri, { useNewUrlParser: true })
+// .then(client => {
+//   const db = client.db('EnjoyMadrid');
+//   app.locals.db = db;
+// }).catch(error => console.error(error));
 
 
 
@@ -25,7 +25,7 @@ app.use('/login', require('./apis/login'));
 app.use('/rrpps', require('./apis/rrpps')); 
 app.use('/usuarios', require('./apis/usuarios'));
 app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
-
+app.use('/discotecas', require('./apis/discotecas'));
  
 var server = app.listen(8000, function () {
   var host = server.address().address
