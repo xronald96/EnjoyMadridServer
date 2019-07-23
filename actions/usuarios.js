@@ -1,20 +1,18 @@
-let AWS = require('aws-sdk');
-let express = require('express');
-var uuid = require('uuid');
-AWS.config.update({
- "region": "eu-west-1",
- "accessKeyId": "AKIA3TCNS7CKI22CSR5I",
- "secretAccessKey": "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"
-});
+// let AWS = require('aws-sdk');
+// let express = require('express');
+// var uuid = require('uuid');
+// AWS.config.update({
+//  "region": "eu-west-1",
+//  "accessKeyId": "AKIA3TCNS7CKI22CSR5I",
+//  "secretAccessKey": "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"
+// });
 
-let docClient = new AWS.DynamoDB.DocumentClient();
-let table = "Usuarios";
+// let docClient = new AWS.DynamoDB.DocumentClient();
+// let table = "Usuarios";
 
 function createUser(objectUser, dbConexion){
-    console.log('LLEGo');
     return new Promise((resolve, reject)=>{
         dbConexion.collection('Usuarios').find({email: objectUser.email}).toArray((err, res) =>{
-            console.log('entro', err, res);
             if(err)
                 reject("Error crear usuario busqueda Email " + err);
             else if(res.length > 0) {
