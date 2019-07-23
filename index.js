@@ -27,7 +27,7 @@ app.use('/usuarios', require('./apis/usuarios'));
 app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
 app.use('/discotecas', require('./apis/discotecas'));
  
-var server = app.listen(8000, function () {
+var server = app.listen(process.env.PORT || 8000, function () {
   var host = server.address().address
   var port = server.address().port
   console.log("Example app listening at http://%s:%s", host, port)
