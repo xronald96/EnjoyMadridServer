@@ -26,15 +26,11 @@ app.use('/rrpps', require('./apis/rrpps'));
 app.use('/usuarios', require('./apis/usuarios'));
 app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
 app.use('/discotecas', require('./apis/discotecas'));
+
+app.get('/', (req, res) =>{
+  res.send("Servidor desplegado");
+})
  
-// ####################################  DEV  ###################################
-// const host = 'localhost';
-// const port = 3000;
-
-// ####################################  PRO  ###################################
-const host = '0.0.0.0';
-const port = process.env.PORT || 3000;
-
 var server = app.listen(process.env.PORT || 8000, function () {
   var host = server.address().address
   var port = server.address().port
