@@ -1,16 +1,18 @@
 var express = require('express');
 var app = express();
-var MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://DevRonald:EnjoyMadridDev@enjoymadrid-rlmhn.mongodb.net/test?retryWrites=true&w=majority7"; 
 
-MongoClient.connect(uri, { useNewUrlParser: true })
-.then(client => {
-  const db = client.db('EnjoyMadrid');
-  app.locals.db = db;
-}).catch(error => console.error(error));
-
-
-
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb://DevRonald:EnjoyMadridDev@enjoymadrid-shard-00-00-rlmhn.mongodb.net:27017,enjoymadrid-shard-00-01-rlmhn.mongodb.net:27017,enjoymadrid-shard-00-02-rlmhn.mongodb.net:27017/test?ssl=true&replicaSet=EnjoyMadrid-shard-0&authSource=admin&retryWrites=true&w=majority"; 
+MongoClient.connect(uri, function(err, client) {
+   if(err) {
+        console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+   }
+   else {
+    console.log('Connected...');
+    const db = client.db('EnjoyMadrid');
+    app.locals.db = db;
+   }
+});
 
 app.use(express.json());
 app.all("/*", function (req, res, next) {

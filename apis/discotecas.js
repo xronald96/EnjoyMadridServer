@@ -10,7 +10,7 @@ router.use(function timeLog(req, res, next) {
  
 // Define the home page route
 router.get('', function(req, res) {
-    actionDiscotecas.getDiscotecas().then((result) => {
+    actionDiscotecas.getDiscotecas(req.app.locals.db).then((result) => {
         res.status(200).send(result);
     }).catch((err) => {
         res.status(400).send(err);

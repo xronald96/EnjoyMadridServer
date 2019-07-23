@@ -11,21 +11,28 @@ let docClient = new AWS.DynamoDB.DocumentClient();
 let table = "Discotecas";
 
 
-function getDiscotecas(){
+function getDiscotecas(dbConexion){
     return new Promise((resolve, reject) =>{
-        var paramsSearch = {
-            TableName: table,
-        };
-        docClient.scan(paramsSearch, function(err, data) {
-            if (err) {
-                reject("Fallo en el scan de usuarios", JSON.stringify(err));
-            } else if (data.Items.length ==  0) { 
-                reject("No hay desiones ni discotecas");
-            }
-            else {
-                resolve(data.Items);
+        dbConexion.collection('Discotecas').find().toArray((err, res) =>{
+            if(err)
+                reject("Error crear usuario busqueda Email " + err);
+            else{
+                resolve(res);
             }
         });
+        // var paramsSearch = {
+        //     TableName: table,
+        // };
+        // docClient.scan(paramsSearch, function(err, data) {
+        //     if (err) {
+        //         reject("Fallo en el scan de usuarios", JSON.stringify(err));
+        //     } else if (data.Items.length ==  0) { 
+        //         reject("No hay desiones ni discotecas");
+        //     }
+        //     else {
+        //         resolve(data.Items);
+        //     }
+        // });
     });
 }
 module.exports = {
