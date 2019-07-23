@@ -10,7 +10,7 @@ router.use(function timeLog(req, res, next) {
  
 // Define the home page route
 router.post('', function(req, res) {
-    actionUser.createUser(req.body).then((result) =>{
+    actionUser.createUser(req.body, req.app.locals.db).then((result) =>{
         res.status(200).send(result);
     }).catch(err =>{
         res.status(400).send(err);
