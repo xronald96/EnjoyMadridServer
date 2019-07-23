@@ -13,13 +13,13 @@ var path = './uploads/';
 
 function newRRPP(objectRRPP, dbConexion){
   return new Promise((resolve, reject) => {
-    dbConexion.collection('RRPPs').find({email: objectRRPP.email}).toArray((err, res) =>{
+    dbConexion.collection('Relaciones').find({email: objectRRPP.email}).toArray((err, res) =>{
       if(err) 
         reject(err);
       else if(res.length > 0)
         reject("Ya exite una rrpp con este dni");
       else {
-        dbConexion.collection('RRPPs').insertOne(objectRRPP, (err, res) => {
+        dbConexion.collection('Relaciones').insertOne(objectRRPP, (err, res) => {
           if(err)
             reject(err);
           else{
@@ -82,7 +82,7 @@ function importRRPPs(dbConexion){
 
 function getBosses(dbConexion) {
   return new Promise((resolve, reject) =>{
-    dbConexion.collection('RRPPs').find({rrpp: 'BOSS'}).toArray((err, res) =>{
+    dbConexion.collection('Relaciones').find({rrpp: 'JEFE'}).toArray((err, res) =>{
       if(err)
         reject(err);
       else

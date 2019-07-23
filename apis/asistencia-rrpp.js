@@ -10,6 +10,7 @@ router.use(function timeLog(req, res, next) {
  
 // Define the home page route
 router.post('', function(req, res) {
+    console.log("Peticion", req);
     actionAsistencia.getRRPPP(req.body, req.app.locals.db).then((result) => {
         res.status(200).send(result);
     }).catch((err) => {
