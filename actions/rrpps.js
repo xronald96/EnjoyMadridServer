@@ -13,11 +13,14 @@ var path = './uploads/';
 
 function newRRPP(objectRRPP, dbConexion){
   return new Promise((resolve, reject) => {
+    // convertimos nombre de lista y email a lowerCase para busquedas
+    objectRRPP.email = objectRRPP.email.toLowerCase();
+    objectRRPP.listName = objectRRPP.listName.toLowerCase();
     dbConexion.collection('Relaciones').find({email: objectRRPP.email}).toArray((err, res) =>{
       if(err) 
         reject(err);
       else if(res.length > 0)
-        reject("Ya exite una rrpp con este dni");
+        reject("Ya exite una rrpp con este email o dni");
       else {
         dbConexion.collection('Relaciones').insertOne(objectRRPP, (err, res) => {
           if(err)
