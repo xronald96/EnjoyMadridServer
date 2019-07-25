@@ -96,7 +96,6 @@ function getBosses(dbConexion) {
 
 function getAll(toSearch, dbConexion) {
   return new Promise((resolve, reject) => {
-    // if(toSearch !== '') {
       const textLower = toSearch.toLowerCase();
       dbConexion.collection('Relaciones').find().toArray((err, res) => {
         if(err)
@@ -104,15 +103,6 @@ function getAll(toSearch, dbConexion) {
         else
           resolve(res.filter(x => x.listName.includes(textLower || '')));
       });
-    // } else {
-    //   dbConexion.collection('Relaciones').find().toArray((err, res) => {
-    //     console.log('2' , res, err);
-    //     if(err)
-    //       reject(err);
-    //     else
-    //       resolve(res);
-    //   });
-    // }
   });
 }
 
