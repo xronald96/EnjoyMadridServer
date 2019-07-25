@@ -39,4 +39,14 @@ router.get('/select-boss', (req, res)=>{
 });
 
 
+router.get('/getAll', (req, res)=>{
+    rrpps.getAll(req.query.toSearch, req.app.locals.db).then((resObject) =>{
+        res.status(200).send(resObject);
+    }).catch((err) =>{
+        res.status(400).send(err);
+    });
+});
+
+
+
 module.exports = router;
