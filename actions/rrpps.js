@@ -20,15 +20,16 @@ function newRRPP(objectRRPP, dbConexion){
       if(err) 
         reject(err);
       else if(res.length > 0)
-        reject("Ya exite una rrpp con este email o dni");
+        reject("Ya exite una rrpp con este email o nombre de lista");
       else {
         dbConexion.collection('Relaciones').insertOne(objectRRPP, (err, res) => {
           if(err)
             reject(err);
           else{
-            let data = objectRRPP.name + '^' + objectRRPP.surname + '^' + objectRRPP.dni; 
-            generateQR(data, './uploads/'+data+'.png').then(fullPath => {
-              sendEmail(objectRRPP.email, data+'.png', fullPath, objectRRPP.name + ' ' + objectRRPP.surname)
+            let data = res.ops[0]._id+ '^' +objectRRPP.listName; 
+            let curDate = Date.now();
+            generateQR(data, './uploads/'+curDate+'.png').then(fullPath => {
+              sendEmail(objectRRPP.email, curDate+'.png', fullPath, objectRRPP.name + ' ' + objectRRPP.surname)
               .then(()=>{
                 resolve(res.ops);
               })
@@ -108,9 +109,11 @@ function getAll(toSearch, dbConexion) {
 
 const generateQR = function(text, fullPath){
   return new Promise((resolve, reject) => {
-    qrcode.toFile(fullPath, text,{type: "png"}, async (err) => {
-      if(err)
+    qrcode.toFile(fullPath, text,{type: "png"}, (err) => {
+      if(err){
+        console.log('Error', err)
         reject(err);
+      }
       else 
         resolve(fullPath);
     });
