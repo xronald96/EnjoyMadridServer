@@ -1,3 +1,5 @@
+
+var autentication = require('../autentication');
 function login(credentials, dbConexion){
 
     return new Promise((resolve, reject) =>{
@@ -9,11 +11,13 @@ function login(credentials, dbConexion){
             }
             else {
                 const tmp = res[0];
+                const userToken = autentication.generateToken(credentials.email);
                 if(tmp.password === credentials.password){
                     resolve({
                         email: tmp.email,
                         _id: tmp._id,
-                        idCompany: tmp.idCompany
+                        idCompany: tmp.idCompany,
+                        token: userToken
                     });
                 }
             }

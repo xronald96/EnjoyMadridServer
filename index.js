@@ -1,4 +1,5 @@
 var express = require('express');
+var autentication = require('./autentication')
 var app = express();
 
 const MongoClient = require('mongodb').MongoClient;
@@ -14,10 +15,32 @@ MongoClient.connect(uri, function(err, client) {
    }
 });
 
+// app.use(require('body-parser').json());
+// app.use(function(req,res,next){
+//     try{
+//       console.log('Esto es una header',req.headers);
+//     const token = req.headers.authorization.split(" ")[1]
+//     jwt.verify(token, key.tokenKey, function (err, payload) {
+//         console.log(payload)
+//         if (payload) {
+//             user.findById(payload.userId).then(
+//                 (doc)=>{
+//                     req.user=doc;
+//                     next()
+//                 }
+//             )
+//         } else {
+//            next()
+//         }
+//     })
+// }catch(e){
+//     next()
+// }
+// })
 app.use(express.json());
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization",);
   return next();
 });
 app.use(express.static('public'));
