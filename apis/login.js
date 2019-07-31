@@ -8,13 +8,13 @@ router.use(function timeLog(req, res, next) {
   next();
 });
  
-router.use(function timeLog(req, res, next) {
-  if(req.baseUrl.includes('login'))
-    next();
-  else 
-     autentitcation.checkToken(req, res, next);
-}
-);
+// router.use(function timeLog(req, res, next) {
+//   if(req.baseUrl.includes('login'))
+//     next();
+//   else 
+//      autentitcation.checkToken(req, res, next);
+// }
+// );
 
 // Define the home page route
 router.post('', function(req, res) {

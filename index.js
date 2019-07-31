@@ -1,5 +1,5 @@
 var express = require('express');
-var autentication = require('./autentication')
+var autentitcation = require('./autentication')
 var app = express();
 
 const MongoClient = require('mongodb').MongoClient;
@@ -40,14 +40,15 @@ MongoClient.connect(uri, function(err, client) {
 app.use(express.json());
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization",);
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
   return next();
 });
 app.use(express.static('public'));
- 
+
+
 //Routes
 app.use('/login', require('./apis/login')); 
-app.use('/rrpps', require('./apis/rrpps')); 
+app.use('/rrpps',autentitcation.checkToken, require('./apis/rrpps')); 
 app.use('/usuarios', require('./apis/usuarios'));
 app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
 app.use('/discotecas', require('./apis/discotecas'));
