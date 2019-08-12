@@ -45,10 +45,16 @@ app.all("/*", function (req, res, next) {
 });
 app.use(express.static('public'));
 
+app.all("/*", function (req, res, next) {
+  if(req.url.includes("/login"))
+    return next();
+  else 
+    return autentitcation.checkToken(req, res, next);
+});
 
 //Routes
 app.use('/login', require('./apis/login')); 
-app.use('/rrpps',autentitcation.checkToken, require('./apis/rrpps')); 
+app.use('/rrpps', require('./apis/rrpps')); 
 app.use('/usuarios', require('./apis/usuarios'));
 app.use('/asistencia-rrpp', require('./apis/asistencia-rrpp'));
 app.use('/discotecas', require('./apis/discotecas'));
