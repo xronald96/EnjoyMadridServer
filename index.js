@@ -45,12 +45,7 @@ app.all("/*", function (req, res, next) {
 });
 app.use(express.static('public'));
 
-app.all("/*", function (req, res, next) {
-  if(req.url.includes("/login"))
-    return next();
-  else 
-    return autentitcation.checkToken(req, res, next);
-});
+// app.use(autentitcation.auth);
 
 //Routes
 app.use('/login', require('./apis/login')); 

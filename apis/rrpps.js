@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var rrpps = require('../actions/rrpps')
-var autentication = require('../autentication')
+var autentication = require('../autentication');
 
  
 const multipart = require('connect-multiparty'); // para la tranferencia de los datos
