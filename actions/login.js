@@ -12,14 +12,19 @@ function login(credentials, dbConexion){
             else {
                 const tmp = res[0];
                 const userToken = autentication.generateToken(credentials.email);
-                dbConexion.collection('Usuarios').updateOne({'_id' : tmp._id},  {'$set' : {'token' : userToken }})
                 if(tmp.password === credentials.password){
-                    resolve({
-                        email: tmp.email,
-                        _id: tmp._id,
-                        idCompany: tmp.idCompany,
-                        token: userToken
+                    dbConexion.collection('Usuarios').updateOne({'_id' : tmp._id},  {'$set' : {'token' : userToken }}).then((res) => {
+                            resolve({
+                                email: tmp.email,
+                                _id: tmp._id,
+                                idCompany: tmp.idCompany,
+                                token: userToken
+                            });
+                        }
+                    ).catch((err) => {
+                        reject(err);
                     });
+                    
                 }
             }
         })
