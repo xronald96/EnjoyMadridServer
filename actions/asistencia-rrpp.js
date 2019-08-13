@@ -12,7 +12,13 @@ function getRRPPP(textToSearch, dbConexion){ // Muchos por hacer aqui
     });
 }
 
+function signRRPP(idRRPP, dbConexion){
+    return Promise((resolve, reject) => {
+        resolve(idRRPP);
+    });
+}
 
 module.exports = {
-    getRRPPP
+    getRRPPP,
+    signRRPP
 }; 

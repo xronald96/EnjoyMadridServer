@@ -18,5 +18,13 @@ router.post('', autentication.checkToken, function(req, res) {
         res.status(400).send(err);
     });
 });
+
+router.post('/sign', autentication.checkToken, function(req, res) {
+    actionAsistencia.signRRPP(req.body, req.app.locals.db).then((result) => {
+        res.status(200).send(result);
+    }).catch((err) => {
+        res.status(400).send(err);
+    });
+});
  
 module.exports = router;
