@@ -1,5 +1,6 @@
 var express = require('express');
-var autentitcation = require('./autentication')
+var os = require('os');
+var ifaces = os.networkInterfaces();
 var app = express();
 
 const MongoClient = require('mongodb').MongoClient;
@@ -15,28 +16,28 @@ MongoClient.connect(uri, function(err, client) {
    }
 });
 
-// app.use(require('body-parser').json());
-// app.use(function(req,res,next){
-//     try{
-//       console.log('Esto es una header',req.headers);
-//     const token = req.headers.authorization.split(" ")[1]
-//     jwt.verify(token, key.tokenKey, function (err, payload) {
-//         console.log(payload)
-//         if (payload) {
-//             user.findById(payload.userId).then(
-//                 (doc)=>{
-//                     req.user=doc;
-//                     next()
-//                 }
-//             )
-//         } else {
-//            next()
-//         }
-//     })
-// }catch(e){
-//     next()
-// }
-// })
+
+
+Object.keys(ifaces).forEach(function (ifname) {
+  var alias = 0;
+
+  ifaces[ifname].forEach(function (iface) {
+    if ('IPv4' !== iface.family || iface.internal !== false) {
+      // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+      return;
+    }
+
+    if (alias >= 1) {
+      // this single interface has multiple ipv4 addresses
+      console.log(ifname + ':' + alias, iface.address);
+    } else {
+      // this interface has only one ipv4 adress
+      console.log(ifname, iface.address);
+    }
+    ++alias;
+  });
+});
+
 app.use(express.json());
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -58,7 +59,7 @@ app.get('/', (req, res) =>{
   res.send("Servidor desplegado");
 })
  
-var server = app.listen(process.env.PORT || 8000, function () {
+var server = app.listen(process.env.PORT || 8000, "192.168.1.138", function () {
   var host = server.address().address
   var port = server.address().port
   console.log("Example app listening at http://%s:%s", host, port)

@@ -13,6 +13,7 @@
 function createUser(objectUser, dbConexion){
     return new Promise((resolve, reject)=>{
         dbConexion.collection('Usuarios').find({email: objectUser.email}).toArray((err, res) =>{
+            console.log(res)
             if(err)
                 reject("Error crear usuario busqueda Email " + err);
             else if(res.length > 0) {

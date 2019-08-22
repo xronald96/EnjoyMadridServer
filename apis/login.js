@@ -18,6 +18,7 @@ router.use(function timeLog(req, res, next) {
 
 // Define the home page route
 router.post('', function(req, res) {
+  console.log('LLego al login');
   actionLogin.login(req.body, req.app.locals.db).then(result =>{
     res.status(200).send(result);
   }).catch(err =>{
