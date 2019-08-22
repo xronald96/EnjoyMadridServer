@@ -59,7 +59,7 @@ app.get('/', (req, res) =>{
   res.send("Servidor desplegado");
 })
  
-var server = app.listen(process.env.PORT || 8000, "192.168.1.138", function () {
+var server = app.listen(process.env.PORT || 8000, function () {
   var host = server.address().address
   var port = server.address().port
   console.log("Example app listening at http://%s:%s", host, port)
